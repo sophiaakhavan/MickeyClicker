@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "cookieclicker7287bb4f": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

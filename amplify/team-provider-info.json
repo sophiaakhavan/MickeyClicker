@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cookieclicker-dev-233331-authRole",
+      "UnauthRoleArn": "arn:aws:iam::724722263521:role/amplify-cookieclicker-dev-233331-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::724722263521:role/amplify-cookieclicker-dev-233331-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-cookieclicker-dev-233331-deployment",
+      "UnauthRoleName": "amplify-cookieclicker-dev-233331-unauthRole",
+      "StackName": "amplify-cookieclicker-dev-233331",
+      "StackId": "arn:aws:cloudformation:us-west-2:724722263521:stack/amplify-cookieclicker-dev-233331/4a8e7540-c2a3-11eb-a561-06eacac6fcad",
+      "AmplifyAppId": "d27wqybaarphwd"
+    },
+    "categories": {
+      "auth": {
+        "cookieclicker7287bb4f": {}
+      }
+    }
+  }
+}
