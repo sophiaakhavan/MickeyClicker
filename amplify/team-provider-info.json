@@ -14,6 +14,17 @@
     "categories": {
       "auth": {
         "cookieclicker7287bb4f": {}
+      },
+      "function": {
+        "cookieclicker7287bb4fPostConfirmation": {
+          "GROUP": "MickeyClicker",
+          "deploymentBucketName": "amplify-cookieclicker-dev-233331-deployment",
+          "s3Key": "amplify-builds/cookieclicker7287bb4fPostConfirmation-6c695a564d5768516a74-build.zip"
+        },
+        "AdminQueriesd000b06a": {
+          "deploymentBucketName": "amplify-cookieclicker-dev-233331-deployment",
+          "s3Key": "amplify-builds/AdminQueriesd000b06a-475455756f654b6f6b65-build.zip"
+        }
       }
     }
   }

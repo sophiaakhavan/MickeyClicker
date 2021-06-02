@@ -1,10 +1,26 @@
 import React from "react";
 import { Text, StyleSheet, View, TouchableOpacity, Image } from "react-native";
+import {Auth} from 'aws-amplify';
 
-const HomeScreen = ({navigation}) => {
+
+
+const HomeScreen = ({navigation, props}) => {
+    function signOut() {
+        Auth.signOut()
+          .then(() => {
+            props.onStateChange('signedOut', null);
+          })
+          .catch(err => {
+            console.log('err: ', err)
+          })
+      }
     return (
         <View style = {{ flex:1, justifyContent: 'center' }}>
             <View style = {{flex:1, backgroundColor: 'black'}}>
+                <TouchableOpacity onPress={()=>signOut()}>
+                    <Text style={styles.text2}>Sign out</Text>
+                </TouchableOpacity>
+                
                 <Text style={styles.text}>Welcome to Mickey Mouse CrackHouse</Text>
             </View>
             <View style={styles.box}>
@@ -25,7 +41,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         top: '30%',
         textAlign: 'center',
-        paddingVertical: 1,
+    },
+    text2: {
+        fontSize: 20,
+        color: 'gray',
+        fontWeight: 'bold',
+        top: '30%',
+        textAlign: 'left',
+        paddingHorizontal: 15,
     },
     box: {
         backgroundColor: 'red',

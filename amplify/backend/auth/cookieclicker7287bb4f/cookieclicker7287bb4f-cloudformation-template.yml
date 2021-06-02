@@ -9,6 +9,18 @@ Parameters:
     Type: String
 
   
+  
+  
+  functioncookieclicker7287bb4fPostConfirmationArn:
+    Type: String
+    Default: functioncookieclicker7287bb4fPostConfirmationArn
+  
+  functioncookieclicker7287bb4fPostConfirmationName:
+    Type: String
+    Default: functioncookieclicker7287bb4fPostConfirmationName
+  
+  
+  
 
     
   identityPoolName:
@@ -75,10 +87,10 @@ Parameters:
   userpoolClientGenerateSecret:
     Type: String
             
-    
   userpoolClientRefreshTokenValidity:
-    Type: Number
-          
+    Type: String
+  
+            
         
   userpoolClientWriteAttributes:
     Type: CommaDelimitedList
@@ -117,7 +129,6 @@ Parameters:
   userPoolGroupList:
     Type: CommaDelimitedList
       
-            
   serviceName:
     Type: String
   
@@ -128,6 +139,50 @@ Parameters:
             
         
   dependsOn:
+    Type: CommaDelimitedList
+      
+  
+  thirdPartyAuth:
+    Type: String
+            
+  
+  userPoolGroups:
+    Type: String
+            
+  
+  adminQueries:
+    Type: String
+            
+  triggers:
+    Type: String
+  
+            
+  
+  hostedUI:
+    Type: String
+            
+  adminQueryGroup:
+    Type: String
+  
+            
+      
+  parentStack:
+    Type: String
+        
+  authTriggerConnections:
+    Type: String
+  
+            
+  
+  breakCircularDependency:
+    Type: String
+            
+        
+  permissions:
+    Type: CommaDelimitedList
+      
+        
+  authProviders:
     Type: CommaDelimitedList
       
 Conditions:

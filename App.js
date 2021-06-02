@@ -3,12 +3,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from "./src/screens/HomeScreen";
 import PlayScreen from "./src/screens/PlayScreen";
-// import Amplify, { Auth } from 'aws-amplify';
-// import awsconfig from './aws-exports';
-// import { withAuthenticator } from 'aws-amplify-react-native'
-// Amplify.configure(awsconfig);
+import Amplify, { Auth } from 'aws-amplify';
+import awsconfig from './src/aws-exports';
+import { withAuthenticator } from 'aws-amplify-react-native';
+Amplify.configure(awsconfig);
 
 const Stack = createStackNavigator();
+
+
 
 const App = () => {
 
@@ -22,5 +24,4 @@ const App = () => {
   );
 }
 
-//export default withAuthenticator(App)
-export default App;
+export default withAuthenticator(App)
