@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "cookieclicker7287bb4f": {}
+        "cookieclicker7287bb4f": {},
+        "userPoolGroups": {}
       },
       "function": {
         "cookieclicker7287bb4fPostConfirmation": {

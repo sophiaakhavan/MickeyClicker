@@ -1,10 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View, TouchableOpacity, Image } from "react-native";
-import {Auth} from 'aws-amplify';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+import awsconfig from '../aws-exports';
+import { Connect } from 'aws-amplify-react';
+import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
+import {createUser} from '../graphql/mutations.js';
+import awsExports from '../aws-exports';
 
 
+Amplify.configure({
+    ...awsExports,
+    Analytics: {
+      disabled: true,
+    },
+  });
 
 const HomeScreen = ({navigation, props}) => {
+
+    // const userDetails = `mutation createUser{
+    //     createUser(input: {hiscore: 0}) {
+    //       id
+    //       name
+    //       hiscore
+    //     }
+    //   }`;
+    
+    const addUser = async () => {
+        let idl = await Auth.currentAuthenticatedUser();
+        const user_var = await API.graphql(graphqlOperation(createUser, {
+            input: {
+                id: idl.attributes.sub,
+                hiscore: 0,
+                name: "name"
+            },
+        }));
+        // const userInfo = user_var.data.createUser;
+        console.log('new user: ', user_var);
+    };
+
+    useEffect(()=> {
+        addUser();
+    }, []);
+
     function signOut() {
         Auth.signOut()
           .then(() => {
@@ -13,7 +51,7 @@ const HomeScreen = ({navigation, props}) => {
           .catch(err => {
             console.log('err: ', err)
           })
-      }
+      };
     return (
         <View style = {{ flex:1, justifyContent: 'center' }}>
             <View style = {{flex:1, backgroundColor: 'black'}}>

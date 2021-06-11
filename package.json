@@ -10,6 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^6.0.0",
@@ -17,14 +19,17 @@
     "@react-navigation/stack": "^5.14.5",
     "amazon-cognito-identity-js": "^5.0.2",
     "aws-amplify": "^4.0.3",
+    "aws-amplify-react": "^5.0.1",
     "aws-amplify-react-native": "^5.0.1",
-    "react": "17.0.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.2",
     "react-native": "0.64.1",
     "react-native-background-timer": "^2.4.1",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-reanimated": "^2.1.0",
     "react-native-safe-area-context": "^3.2.0",
-    "react-native-screens": "^3.3.0"
+    "react-native-screens": "^3.3.0",
+    "semantic-ui-react": "^2.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

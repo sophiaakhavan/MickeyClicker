@@ -9,12 +9,32 @@ import {
     Animated
 } from 'react-native';
 import BackgroundTimer from "react-native-background-timer";
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+import awsconfig from '../aws-exports';
+import { listUsers } from '../graphql/queries';
+import { Connect } from 'aws-amplify-react';
+import { CommentText, Grid, Header, Input, List, Segment } from 'semantic-ui-react';
+import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
+import {updateUser} from '../graphql/mutations.js';
+import {getUser} from '../graphql/mutations.js';
+import { isDecimalLiteral } from '@babel/types';
+
+
+Amplify.configure(awsconfig);
+
+
 
 const PlayScreen = ({navigation}) => {
+
 
     const [timerOn, setTimerOn] = useState(false);
     const [seconds, setSeconds] = useState(0); //start at 0 seconds
     const [clicksPerSecond, setClicksPerSecond] = useState(0); //average cps
+
+    //need to make a global state variable that updates when counter updates
+    //and a local state variable that is counter for clicks
+
 
     const [counter, setCounter] = useState(0); //count the #clicks for displaying total clicks
     const [clicks, setClicks] = useState(0); //count clicks for calculating cps
@@ -24,12 +44,67 @@ const PlayScreen = ({navigation}) => {
     const outputRange = [1, 0.8];
     const scale = animation.interpolate({inputRange, outputRange});
 
+    const [users, setUsers] = useState([]);
+    const [awsCount, setAwsCount] = useState([]); //global variable, only change if counter exceeds its value
+
+
+    //retreive current hiscore from aws
+    const fetchScore = async () => {
+        try {
+            let idl = await Auth.currentAuthenticatedUser();
+            console.log('id: ', idl.attributes.sub);
+
+            const currentUser = await API.graphql(
+                graphqlOperation(queries.getUser, {
+                    id: idl.attributes.sub,
+                }),
+            );
+            //console.log('stats: ', currentUser.data.getUser);
+            const userScore = currentUser.data.getUser.hiscore;
+            console.log('user score', userScore);
+
+            setAwsCount(userScore);
+        } catch (error) {
+            console.log('error on fetching user score', error);
+        }
+    }
+    useEffect(()=> {
+        fetchScore();
+    }, []);
+
+    const fetchUsers = async () => {
+        try {
+            const userData = await API.graphql(graphqlOperation(listUsers));
+            const userList = userData.data.listUsers.items;
+            console.log('user list', userList);
+            setUsers(userList);
+        } catch (error) {
+            console.log('error on fetching users', error);
+        }
+    };
+    useEffect(()=> {
+        fetchUsers();
+    }, []);
+
+    //update hiscore, function called inside touchableopacity if counter exceeds hiscore
+    const updateAws = async () => {
+        let idl = await Auth.currentAuthenticatedUser();
+        await API.graphql(
+            graphqlOperation(mutations.updateUser, {
+              input: {
+                id: idl.attributes.sub,
+                hiscore: awsCount,
+              },
+            }),
+          );
+    };
+
     //every second, update second to +1
     const startTimer = () => {
         BackgroundTimer.runBackgroundTimer(() => {
             setSeconds(secs=>{return secs+1});
         }, 1000);
-    }
+    };
 
     // Runs when timerOn value changes to start or stop timer
     useEffect(() => {
@@ -46,7 +121,7 @@ const PlayScreen = ({navigation}) => {
         return {
             displaySecs,
           }
-    }
+    };
 
     //animation of rat
     const onPressIn = () => {
@@ -64,6 +139,7 @@ const PlayScreen = ({navigation}) => {
 
     return (
         <View style={{backgroundColor:'lavender', flex: 1}}>
+            <Text style={styles.hiscorestyle}>Beat your high score: {awsCount}</Text>
             <Text style={styles.fear}>Do Not Be Afraid</Text>
             <Text style={styles.fear}>Click The Rat</Text>
             <Text style={styles.click}>Clicks: {counter}</Text>
@@ -71,6 +147,14 @@ const PlayScreen = ({navigation}) => {
                 <TouchableWithoutFeedback
                 onPress={() => {
                     setCounter(counter+1);
+                    setAwsCount(aws=> {
+                        if(counter>aws){
+                            aws=counter;
+                        }
+                        console.log(aws);
+                        updateAws();
+                        return aws;
+                    });
                     setClicks(clicks+1);
                     setClicksPerSecond(avg=> {
                         avg = Math.floor(clicks / seconds);
@@ -90,6 +174,7 @@ const PlayScreen = ({navigation}) => {
             </TouchableOpacity>
             <Text style={styles.clicktemp}>{clockify().displaySecs} Secs</Text>
             <Text style={styles.clicksec}>Clicks per second: {clicksPerSecond}</Text>
+
         </View>
     );
 };
@@ -97,14 +182,23 @@ const PlayScreen = ({navigation}) => {
 
 
 const styles = StyleSheet.create({
-    fear: {
-        fontSize:45,
+    hiscorestyle: {
+        fontSize:20,
         fontWeight:'bold',
         alignSelf: 'center',
         color: 'plum',
         fontStyle: 'italic',
-        top: "4%",
-        padding: 10
+        top: "2%",
+        padding: 1
+    },
+    fear: {
+        fontSize:30,
+        fontWeight:'bold',
+        alignSelf: 'center',
+        color: 'plum',
+        fontStyle: 'italic',
+        top: "5%",
+        padding: 7
     },
     imageStyle: {
         height: 300,
@@ -116,7 +210,7 @@ const styles = StyleSheet.create({
     click: {
         alignSelf: 'center',
         fontSize: 30,
-        top: "5%",
+        top: "6%",
         fontWeight: 'bold',
         color: 'plum'
     },
